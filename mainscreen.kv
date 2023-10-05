@@ -1,0 +1,73 @@
+ScreenManager:
+
+    id: ScreenManager
+    MenuScreen:
+    MainScreen:
+    GameOverScreen:
+    LevelCompletedScreen:
+
+
+
+<MenuScreen>:
+    name: "MenuScreen"
+    Button:
+        text: "START"
+        on_press: root.start_game() #app.root.current = "MainScreen"
+
+<GameOverScreen>:
+    name: "GameOverScreen"
+    id: gameoverscreen
+    BoxLayout:
+        
+        Label:
+            text:"GAME OVER!"
+        Button:
+            text: "START OVER"
+            on_press: root.game_restart()
+
+<LevelCompletedScreen>:
+    name: "LevelCompletedScreen"
+    Label:
+        text: "Level Completed"
+
+<MainScreen>:
+    name: "MainScreen"
+    BoxLayout:
+        orientation: "vertical"
+        
+        Label:
+            text: "Guessing game"
+            size_hint_y: 0.1
+        
+        GameArea:
+            BoxLayout:
+                padding: 20
+                ScrollView:
+                    size: self.size
+                    do_scroll_y: True
+                    do_scroll_x: False
+                    ScrollableButtons:
+                        id: scrollable_buttons
+                        size_hint_y: None
+                        height: self.minimum_height
+
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    id: gen_num_label
+                    text: "generated number: "
+                Label:
+                    text: root.gen_num_label
+                
+
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "QUOTES"
+                    size_hint_y: 0.5
+                Button:
+                    id: gen_butt
+                    text: "generate number"
+                    size_hint_y: 0.5
+                    on_press: root.rand_butt_press(self)
+                
