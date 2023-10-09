@@ -10,9 +10,10 @@ ScreenManager:
 
 <MenuScreen>:
     name: "MenuScreen"
+    id: menuscreen
     Button:
         text: "START"
-        on_press: root.start_game() #app.root.current = "MainScreen"
+        on_press: root.start_game()
 
 <GameOverScreen>:
     name: "GameOverScreen"
@@ -26,12 +27,15 @@ ScreenManager:
             on_press: root.game_restart()
 
 <LevelCompletedScreen>:
+    id: levelcompletedscreen
     name: "LevelCompletedScreen"
     Label:
         text: "Level Completed"
 
 <MainScreen>:
+    id: mainscreen
     name: "MainScreen"
+    on_enter: self.reload()
     BoxLayout:
         orientation: "vertical"
         
