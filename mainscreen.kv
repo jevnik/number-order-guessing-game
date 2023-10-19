@@ -6,14 +6,39 @@ ScreenManager:
     GameOverScreen:
     LevelCompletedScreen:
 
+<Label>:
+    font_name: "Micro-Six.ttf"
+    font_size: 20
 
-
+<Button>:
+    background_normal: ""
+    background_color: 0,0,0
 <MenuScreen>:
     name: "MenuScreen"
     id: menuscreen
-    Button:
-        text: "START"
-        on_press: root.start_game()
+    canvas.before:
+        Color:
+            rgb: 0, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 50
+        spacing: 20
+
+        Label:
+            width: root.width
+            text: 'Guessing game'
+            font_size: 40
+            color: 0.2, 0.2, 0.2, 1
+
+        Button:
+            text: 'START'
+            font_size: 60
+            background_color: 0.4, 0.4, 0.4, 0.5
+            background_normal: ''
+            on_press: root.start_game()
 
 <GameOverScreen>:
     name: "GameOverScreen"

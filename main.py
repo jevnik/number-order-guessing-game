@@ -12,6 +12,11 @@ from kivy.metrics import dp
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.core.audio import SoundLoader
+from kivy.config import Config
+
+
+
 
 level = 2
 game_over = False
@@ -53,7 +58,6 @@ class GameOverScreen(Screen):
         app.root.current = "MenuScreen"
         
 
-
 class MainScreen(Screen):
     gen_num_label = StringProperty("Generate first number to start")
     gen_num = 0
@@ -74,6 +78,7 @@ class MainScreen(Screen):
             self.ids.scrollable_buttons.remove_widget(button)
         self.ids.scrollable_buttons.add_buttons_for_level(level)
         print(self.ids.scrollable_buttons.buttons)
+        self.gen_num_label = "Generate first number to start"
 
 class GameArea(BoxLayout):
     def __init__(self, **kwargs):
@@ -141,10 +146,12 @@ class ScrollableButtons(BoxLayout):
                 else:
                     solved_num += 1
 
+
             if solved_num == len(self.buttons)-1:
                 app = App.get_running_app()
                 app.root.current = "LevelCompletedScreen"
                 level += 1
+                
                 print(level)
             else:
                 solved_num = 0
@@ -156,7 +163,12 @@ class ScreenManager(ScreenManager):
 kv = Builder.load_file("mainscreen.kv")
 
 class MyApp(App):
+    music = SoundLoader.load("guessing game andorid v0.2 adding menu\just-relax-11157.mp3")
     def build(self):
+        if self.music:
+            self.music.volume = 0.5
+            self.music.loop = True
+            self.music.play()
         return kv
     
 if __name__ == '__main__':
