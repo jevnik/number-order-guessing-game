@@ -13,6 +13,8 @@ ScreenManager:
 <Button>:
     background_normal: ""
     background_color: 0,0,0
+
+
 <MenuScreen>:
     name: "MenuScreen"
     id: menuscreen
@@ -44,10 +46,13 @@ ScreenManager:
     name: "GameOverScreen"
     id: gameoverscreen
     BoxLayout:
-        
+        padding: 50
+        spacing: 20
         Label:
             text:"GAME OVER!"
         Button:
+            background_normal: ""
+            background_color: 0.4, 0.4, 0.4, 0.5
             text: "START OVER"
             on_press: root.game_restart()
 
@@ -63,14 +68,21 @@ ScreenManager:
     on_enter: self.reload()
     BoxLayout:
         orientation: "vertical"
-        
-        Label:
-            text: "Guessing game"
-            size_hint_y: 0.1
+        BoxLayout:
+            size_hint_y:0.1
+            orientation: "horizontal"
+            Label:
+                text: "Guessing game"
+                size_hint_x: 0.8
+            Label: 
+                text: root.level_string
+
         
         GameArea:
             BoxLayout:
-                padding: 20
+                size_hint_x:0.4
+                padding: 50
+                spacing: 20
                 ScrollView:
                     size: self.size
                     do_scroll_y: True
@@ -81,22 +93,25 @@ ScreenManager:
                         height: self.minimum_height
 
             BoxLayout:
+                padding: 50
+                spacing: 20
                 orientation: "vertical"
                 Label:
-                    id: gen_num_label
-                    text: "generated number: "
-                Label:
-                    text: root.gen_num_label
-                
+                    text: root.gen_quote_label
+                    text_size: self.size
+                    valign: "middle"
 
-            BoxLayout:
-                orientation: "vertical"
-                Label:
-                    text: "QUOTES"
-                    size_hint_y: 0.5
+
+
                 Button:
+                    background_normal: ""
+                    background_color: 0.4, 0.4, 0.4, 0.5
+                            
                     id: gen_butt
-                    text: "generate number"
+                    text: root.gen_num_label
+                    text_size: self.size
+                    halign: 'center'  
+                    valign: 'middle'
                     size_hint_y: 0.5
                     on_press: root.rand_butt_press(self)
                 
