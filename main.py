@@ -14,8 +14,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 from kivy.config import Config
-
-
+import requests
 
 
 level = 2
@@ -39,7 +38,6 @@ class LevelCompletedScreen(Screen):
         Clock.schedule_once(self.back,2)
     
 
-
 class GameOverScreen(Screen):
     def game_restart(self):
         global game_over
@@ -59,32 +57,45 @@ class GameOverScreen(Screen):
         
 
 class MainScreen(Screen):
+    global level
+    level_string = StringProperty(f"lvl: {level}")
     gen_num_label = StringProperty("Generate first number to start")
+    gen_quote_label = StringProperty("")
     gen_num = 0
     gen_num_clicked = False
     solved_num = 0
+    
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
-        
+        self.gen_quote()
+
     def rand_butt_press(self,button):
         if not self.gen_num_clicked:
             MainScreen.gen_num = random.randint(1,100)
             MainScreen.gen_num_clicked = True
             self.gen_num_label = f"{MainScreen.gen_num}"
+            self.gen_quote()
             print(self.gen_num_label)
+
     
     def reload(self):
         for button in self.ids.scrollable_buttons.buttons[1:]:
             self.ids.scrollable_buttons.remove_widget(button)
         self.ids.scrollable_buttons.add_buttons_for_level(level)
         print(self.ids.scrollable_buttons.buttons)
-        self.gen_num_label = "Generate first number to start"
+        self.gen_num_label = "Generate\nfirst number to start"
+        self.level_string = f"lvl: {level}"
+    
+    def gen_quote(self):
+        response = requests.get("https://zenquotes.io/api/quotes")
+        qoutes = response.json()
+        self.gen_quote_label = f"{qoutes[0]['q']} \n -{qoutes[0]['a']}"
 
 class GameArea(BoxLayout):
     def __init__(self, **kwargs):
         super(GameArea, self).__init__(**kwargs)
-        
-        
+
+      
 class ScrollableButtons(BoxLayout):
     def __init__(self, **kwargs):
         super(ScrollableButtons, self).__init__(**kwargs)
@@ -107,7 +118,6 @@ class ScrollableButtons(BoxLayout):
             self.buttons.append(button)
             self.add_widget(button)
         
-    
     
     def entered_value(self,button):
         solved_num = 0
@@ -164,6 +174,9 @@ kv = Builder.load_file("mainscreen.kv")
 
 class MyApp(App):
     music = SoundLoader.load("guessing game andorid v0.2 adding menu\just-relax-11157.mp3")
+    response = requests.get("https://zenquotes.io/api/quotes")
+    qoutes = response.json()
+
     def build(self):
         if self.music:
             self.music.volume = 0.5
